@@ -8,11 +8,9 @@ Simple open source payroll. Free. For everyone.
 
 ## What is this?
 
-Most payroll tools are either too expensive or built for companies with HR teams. Small businesses, shops, startups — they end up doing it manually in Excel every month.
-
-PayLeaf fixes that. Open source, free, works for any team size.
-
-I'm a cybersecurity engineering student and I built this because it felt like something that should exist. Built with AI assistance — because that's just how you build things now. No monetization, no premium tier, no bullshit.
+Payroll software is either too expensive, too complex, or built only for large enterprises. Every other business — shops, startups, agencies, freelancers managing contractors — ends up doing it manually in Excel every month.
+PayLeaf fixes that. It works for any business, any size, anywhere. 2 employees or 2000, the experience is the same.
+I'm a cybersecurity engineering student and I built this because it felt like something that should exist and be free. Built with AI assistance. No monetization, no premium tier, no bullshit.
 
 ---
 
