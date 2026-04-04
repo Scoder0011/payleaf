@@ -2,7 +2,7 @@
 
 Simple open source payroll. Free. For everyone.
 
-**Try it live → [payleaf.vercel.app](https://payleaf.vercel.app)**
+**Try it live → [https://payleaf-nu.vercel.app/](https://payleaf.vercel.app)**
 
 ---
 
@@ -87,6 +87,7 @@ MIT. Do whatever you want with it.
 
 ---
 
-Made by [@yourusername](https://github.com/scoder0011) — cybersecurity engineering student, building in public
+Made by [Scoder0011](https://github.com/scoder0011) — cybersecurity engineering student, building in public
+My Linked In Follow For More Updates [Scoder0011](https://www.linkedin.com/in/scoder0011/)
 
 Star it if it's useful ⭐
