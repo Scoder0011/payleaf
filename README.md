@@ -2,7 +2,7 @@
 
 Simple open source payroll. Free. For everyone.
 
-**Try it live → [https://payleaf-nu.vercel.app/](https://payleaf.vercel.app)**
+**Try it live → [payleaf.vercel.app](https://payleaf-nu.vercel.app/)**
 
 ---
 
