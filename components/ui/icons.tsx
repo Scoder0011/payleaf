@@ -106,6 +106,162 @@ export function HistoryIcon(props: IconProps) {
   )
 }
 
+export function CalculatorIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <rect x="5.5" y="3.5" width="13" height="17" rx="2.5" stroke="currentColor" strokeWidth="1.75" />
+      <rect x="8.25" y="6.75" width="7.5" height="3" rx="1" stroke="currentColor" strokeWidth="1.75" />
+      <path d="M8.75 13H10.25" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path d="M13.75 13H15.25" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path d="M8.75 16.5H10.25" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path d="M13.75 16.5H15.25" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function FileTextIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M8 4.75H13.5L17.25 8.5V18C17.25 19.24 16.24 20.25 15 20.25H8C6.76 20.25 5.75 19.24 5.75 18V7C5.75 5.76 6.76 4.75 8 4.75Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      <path d="M13.25 4.75V8.75H17.25" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" />
+      <path d="M8.75 12H14.25" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path d="M8.75 15.5H14.25" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function ShieldIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M12 3.75L18 6V11.55C18 15.24 15.73 18.55 12 20.25C8.27 18.55 6 15.24 6 11.55V6L12 3.75Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M9.5 12.25L11.25 14L14.75 10.5"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export function ThemeIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <circle cx="12" cy="12" r="7.25" stroke="currentColor" strokeWidth="1.75" />
+      <path
+        d="M12 4.75C15.98 4.75 19.25 8.02 19.25 12C19.25 15.98 15.98 19.25 12 19.25V4.75Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+export function StarIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M12 4.75L14.24 9.29L19.25 10.02L15.62 13.56L16.48 18.55L12 16.2L7.52 18.55L8.38 13.56L4.75 10.02L9.76 9.29L12 4.75Z"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
+export function KeyIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <circle cx="8.5" cy="12" r="3.75" stroke="currentColor" strokeWidth="1.75" />
+      <path
+        d="M12.25 12H19.75"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M16 12V15"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M18.75 12V14.25"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+    </svg>
+  )
+}
+
+export function CurrencyIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M7 7.5H15.25C16.91 7.5 18.25 8.84 18.25 10.5C18.25 12.16 16.91 13.5 15.25 13.5H8.75C7.09 13.5 5.75 14.84 5.75 16.5C5.75 18.16 7.09 19.5 8.75 19.5H17"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M10 4.75V7.5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path d="M14 19.5V16.75" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" />
+      <path d="M17.25 5.75L19.25 7.75L17.25 9.75" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.75 14.25L4.75 16.25L6.75 18.25" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+export function AnalyticsIcon(props: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
+      <path
+        d="M5.75 18.25H18.25"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M8.25 18V12.5"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M12 18V9"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M15.75 18V6"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+      />
+      <path
+        d="M6.75 8.75L10.25 6.5L13 8.25L17.25 4.75"
+        stroke="currentColor"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export function SettingsIcon(props: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
