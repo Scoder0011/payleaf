@@ -1,12 +1,16 @@
 import Link from 'next/link'
+import { PayLeafMarkIcon } from '@/components/ui/icons'
 
 export default function Home() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-white px-4">
       <div className="text-center max-w-md">
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          🌿 PayLeaf
-        </h1>
+        <div className="mb-4 flex items-center justify-center gap-3">
+          <PayLeafMarkIcon className="h-11 w-11 text-emerald-600" />
+          <h1 className="text-4xl font-bold text-gray-900">
+            PayLeaf
+          </h1>
+        </div>
         <p className="text-gray-500 text-lg mb-8">
           Simple open source payroll. Free. For everyone.
         </p>

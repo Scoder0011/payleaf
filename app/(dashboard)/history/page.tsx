@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
+import { ArrowLeftIcon } from '@/components/ui/icons'
 
 export default function HistoryPage() {
   const [records, setRecords] = useState<any[]>([])
@@ -30,39 +31,45 @@ export default function HistoryPage() {
 
   if (loading) return (
     <main className="min-h-screen flex items-center justify-center">
-      <p className="text-gray-400">Loading...</p>
+      <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
     </main>
   )
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-8">
+    <main className="min-h-screen px-4 py-8" style={{ background: 'var(--bg-primary)' }}>
       <div className="max-w-2xl mx-auto">
         <div className="mb-6">
           <button
             onClick={() => router.push('/dashboard')}
-            className="text-sm text-gray-400 hover:text-gray-600 mb-1 block"
+            className="mb-1 inline-flex items-center gap-2 text-sm transition-opacity hover:opacity-80"
+            style={{ color: 'var(--text-muted)' }}
           >
-            ← Back
+            <ArrowLeftIcon className="h-4 w-4" />
+            Back
           </button>
-          <h1 className="text-2xl font-bold text-gray-900">Payment History</h1>
+          <h1 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Payment History</h1>
         </div>
 
         {records.length === 0 && (
-          <div className="bg-white rounded-xl p-8 border border-gray-100 text-center">
-            <p className="text-gray-400">No payments recorded yet</p>
+          <div
+            className="rounded-xl p-8 text-center"
+            style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+          >
+            <p style={{ color: 'var(--text-secondary)' }}>No payments recorded yet</p>
           </div>
         )}
 
         <div className="flex flex-col gap-3">
           {records.map(record => (
             <div key={record.id}
-              className="bg-white rounded-xl p-5 border border-gray-100">
+              className="rounded-xl p-5"
+              style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <p className="font-medium text-gray-900">
+                  <p className="font-medium" style={{ color: 'var(--text-primary)' }}>
                     {record.employees?.name || 'Deleted Employee'}
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
                     {record.employees?.role || '-'}
                   </p>
                 </div>
@@ -70,19 +77,22 @@ export default function HistoryPage() {
                   <p className="font-bold text-green-600 text-lg">
                     ₹{record.net_salary?.toLocaleString()}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                     {months[record.month - 1]} {record.year}
                   </p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-2 text-xs text-gray-400 border-t border-gray-50 pt-3">
+              <div
+                className="grid grid-cols-3 gap-2 text-xs pt-3"
+                style={{ color: 'var(--text-muted)', borderTop: '1px solid var(--border)' }}
+              >
                 <div>
                   <p>Gross</p>
-                  <p className="text-gray-600 font-medium">₹{record.gross_salary?.toLocaleString()}</p>
+                  <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>₹{record.gross_salary?.toLocaleString()}</p>
                 </div>
                 <div>
                   <p>Days present</p>
-                  <p className="text-gray-600 font-medium">{record.days_present}/{record.working_days}</p>
+                  <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>{record.days_present}/{record.working_days}</p>
                 </div>
                 <div>
                   <p>Status</p>

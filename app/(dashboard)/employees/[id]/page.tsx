@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { calculateSalary } from '@/lib/calculations'
+import { ArrowLeftIcon } from '@/components/ui/icons'
 
 export default function EmployeePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -63,6 +64,12 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
     ptEnabled,
     ptAmount,
   }) : null
+  const cardStyle = { background: 'var(--bg-card)', border: '1px solid var(--border)' }
+  const inputStyle = {
+    background: 'var(--bg-secondary)',
+    border: '1px solid var(--border)',
+    color: 'var(--text-primary)',
+  }
 
   async function savePayroll() {
     if (!result || !employee) return
@@ -95,38 +102,40 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
 
   if (loading) return (
     <main className="min-h-screen flex items-center justify-center">
-      <p className="text-gray-400">Loading...</p>
+      <p style={{ color: 'var(--text-secondary)' }}>Loading...</p>
     </main>
   )
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-8">
+    <main className="min-h-screen px-4 py-8" style={{ background: 'var(--bg-primary)' }}>
       <div className="max-w-2xl mx-auto">
 
         <button onClick={() => router.push('/employees')}
-          className="text-sm text-gray-400 hover:text-gray-600 mb-4 block">
-          ← Back
+          className="mb-4 inline-flex items-center gap-2 text-sm transition-opacity hover:opacity-80"
+          style={{ color: 'var(--text-muted)' }}>
+          <ArrowLeftIcon className="h-4 w-4" />
+          Back
         </button>
 
         {/* Employee info */}
-<div className="bg-white rounded-xl p-6 border border-gray-100 mb-4">
-  <h1 className="text-xl font-bold text-gray-900">{employee?.name}</h1>
-  <p className="text-gray-400 text-sm">{employee?.role}</p>
-  <p className="text-green-600 font-semibold mt-1">
-    ₹{parseFloat(employee?.basic_salary || 0).toLocaleString()} base monthly salary
-  </p>
-</div>
+        <div className="rounded-xl p-6 mb-4" style={cardStyle}>
+          <h1 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{employee?.name}</h1>
+          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{employee?.role}</p>
+          <p className="text-green-600 font-semibold mt-1">
+            ₹{parseFloat(employee?.basic_salary || 0).toLocaleString()} base monthly salary
+          </p>
+        </div>
 
         {/* Attendance */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100 mb-4">
-          <h2 className="font-semibold text-gray-900 mb-1">Attendance</h2>
-          <p className="text-xs text-gray-400 mb-4">
+        <div className="rounded-xl p-6 mb-4" style={cardStyle}>
+          <h2 className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>Attendance</h2>
+          <p className="text-xs mb-4" style={{ color: 'var(--text-muted)' }}>
             Set total working days this month and how many days the employee was present.
             Salary will be deducted proportionally for absent days.
           </p>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="text-xs text-gray-400 mb-1 block">Total working days this month</label>
+              <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>Total working days this month</label>
               <input type="number" value={workingDays}
                 min={1}
                 onChange={e => {
@@ -134,17 +143,19 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
                   setWorkingDays(val)
                   if (daysPresent > val) setDaysPresent(val)
                 }}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                style={inputStyle}
               />
             </div>
             <div>
-              <label className="text-xs text-gray-400 mb-1 block">
+              <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>
                 Days present (max {workingDays})
               </label>
               <input type="number" value={daysPresent}
                 min={0} max={workingDays}
                 onChange={e => setDaysPresent(Math.min(Math.max(0, Number(e.target.value)), workingDays))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                style={inputStyle}
               />
             </div>
           </div>
@@ -156,64 +167,69 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
         </div>
 
         {/* Earnings */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100 mb-4">
-          <h2 className="font-semibold text-gray-900 mb-1">Additional Earnings</h2>
-          <p className="text-xs text-gray-400 mb-4">
+        <div className="rounded-xl p-6 mb-4" style={cardStyle}>
+          <h2 className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>Additional Earnings</h2>
+          <p className="text-xs mb-4" style={{ color: 'var(--text-muted)' }}>
             Add anything on top of the base salary. Leave at 0 if not applicable.
           </p>
           <div className="flex flex-col gap-3">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">
+                <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>
                   HRA — House Rent Allowance
                 </label>
                 <input type="number" value={hra} min={0}
                   onChange={e => setHra(pos(Number(e.target.value)))}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  style={inputStyle}
                 />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">
+                <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>
                   Allowances — travel, food etc.
                 </label>
                 <input type="number" value={allowances} min={0}
                   onChange={e => setAllowances(pos(Number(e.target.value)))}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  style={inputStyle}
                 />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Overtime hours worked</label>
+                <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>Overtime hours worked</label>
                 <input type="number" value={overtimeHours} min={0}
                   onChange={e => setOvertimeHours(pos(Number(e.target.value)))}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  style={inputStyle}
                 />
               </div>
               <div>
-                <label className="text-xs text-gray-400 mb-1 block">Overtime pay per hour (₹)</label>
+                <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>Overtime pay per hour (₹)</label>
                 <input type="number" value={overtimeRate} min={0}
                   onChange={e => setOvertimeRate(pos(Number(e.target.value)))}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                  style={inputStyle}
                 />
               </div>
             </div>
             <div>
-              <label className="text-xs text-gray-400 mb-1 block">
+              <label className="text-xs mb-1 block" style={{ color: 'var(--text-muted)' }}>
                 Bonus — festival, performance etc.
               </label>
               <input type="number" value={bonus} min={0}
                 onChange={e => setBonus(pos(Number(e.target.value)))}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                className="w-full rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                style={inputStyle}
               />
             </div>
           </div>
         </div>
 
         {/* Deductions */}
-        <div className="bg-white rounded-xl p-6 border border-gray-100 mb-4">
-          <h2 className="font-semibold text-gray-900 mb-1">Deductions</h2>
-          <p className="text-xs text-gray-400 mb-4">
+        <div className="rounded-xl p-6 mb-4" style={cardStyle}>
+          <h2 className="font-semibold mb-1" style={{ color: 'var(--text-primary)' }}>Deductions</h2>
+          <p className="text-xs mb-4" style={{ color: 'var(--text-muted)' }}>
             Enable only what applies. You can customize the rates.
           </p>
           <div className="flex flex-col gap-4">
@@ -222,8 +238,8 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
             <div>
               <label className="flex items-center justify-between cursor-pointer mb-2">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">PF — Provident Fund</p>
-                  <p className="text-xs text-gray-400">Deducted from basic salary</p>
+                  <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>PF — Provident Fund</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Deducted from basic salary</p>
                 </div>
                 <input type="checkbox" checked={pfEnabled}
                   onChange={e => setPfEnabled(e.target.checked)}
@@ -234,9 +250,10 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
                 <div className="flex items-center gap-2">
                   <input type="number" value={pfRate} min={0} max={100}
                     onChange={e => setPfRate(pos(Number(e.target.value)))}
-                    className="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    className="w-24 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    style={inputStyle}
                   />
-                  <span className="text-sm text-gray-400">% of basic salary</span>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>% of basic salary</span>
                 </div>
               )}
             </div>
@@ -245,8 +262,8 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
             <div>
               <label className="flex items-center justify-between cursor-pointer mb-2">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">ESI — Employee State Insurance</p>
-                  <p className="text-xs text-gray-400">Deducted from gross salary</p>
+                  <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>ESI — Employee State Insurance</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Deducted from gross salary</p>
                 </div>
                 <input type="checkbox" checked={esiEnabled}
                   onChange={e => setEsiEnabled(e.target.checked)}
@@ -257,9 +274,10 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
                 <div className="flex items-center gap-2">
                   <input type="number" value={esiRate} min={0} max={100}
                     onChange={e => setEsiRate(pos(Number(e.target.value)))}
-                    className="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    className="w-24 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    style={inputStyle}
                   />
-                  <span className="text-sm text-gray-400">% of gross salary</span>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>% of gross salary</span>
                 </div>
               )}
             </div>
@@ -268,8 +286,8 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
             <div>
               <label className="flex items-center justify-between cursor-pointer mb-2">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">TDS — Tax Deducted at Source</p>
-                  <p className="text-xs text-gray-400">Deducted from gross salary</p>
+                  <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>TDS — Tax Deducted at Source</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Deducted from gross salary</p>
                 </div>
                 <input type="checkbox" checked={tdsEnabled}
                   onChange={e => setTdsEnabled(e.target.checked)}
@@ -280,9 +298,10 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
                 <div className="flex items-center gap-2">
                   <input type="number" value={tdsRate} min={0} max={100}
                     onChange={e => setTdsRate(pos(Number(e.target.value)))}
-                    className="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    className="w-24 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    style={inputStyle}
                   />
-                  <span className="text-sm text-gray-400">% of gross salary</span>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>% of gross salary</span>
                 </div>
               )}
             </div>
@@ -291,8 +310,8 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
             <div>
               <label className="flex items-center justify-between cursor-pointer mb-2">
                 <div>
-                  <p className="text-sm font-medium text-gray-700">PT — Professional Tax</p>
-                  <p className="text-xs text-gray-400">Fixed amount per month</p>
+                  <p className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>PT — Professional Tax</p>
+                  <p className="text-xs" style={{ color: 'var(--text-muted)' }}>Fixed amount per month</p>
                 </div>
                 <input type="checkbox" checked={ptEnabled}
                   onChange={e => setPtEnabled(e.target.checked)}
@@ -301,12 +320,13 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
               </label>
               {ptEnabled && (
                 <div className="flex items-center gap-2">
-                  <span className="text-sm text-gray-400">₹</span>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>₹</span>
                   <input type="number" value={ptAmount} min={0}
                     onChange={e => setPtAmount(pos(Number(e.target.value)))}
-                    className="w-24 border border-gray-200 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    className="w-24 rounded-lg px-3 py-2 text-sm outline-none focus:border-green-500"
+                    style={inputStyle}
                   />
-                  <span className="text-sm text-gray-400">per month</span>
+                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>per month</span>
                 </div>
               )}
             </div>
@@ -316,73 +336,76 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
 
         {/* Result */}
         {result && (
-          <div className="bg-green-50 rounded-xl p-6 border border-green-200 mb-4">
-            <h2 className="font-semibold text-gray-900 mb-4">Salary Breakdown</h2>
+          <div
+            className="rounded-xl p-6 mb-4"
+            style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+          >
+            <h2 className="font-semibold mb-4" style={{ color: 'var(--text-primary)' }}>Salary Breakdown</h2>
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500">Base salary</span>
-                <span className="font-medium">₹{Number(employee?.basic_salary).toLocaleString()}</span>
+                <span style={{ color: 'var(--text-secondary)' }}>Base salary</span>
+                <span className="font-medium" style={{ color: 'var(--text-primary)' }}>₹{Number(employee?.basic_salary).toLocaleString()}</span>
               </div>
               {hra > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">HRA</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>HRA</span>
                   <span className="text-green-600">+₹{hra.toLocaleString()}</span>
                 </div>
               )}
               {allowances > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Allowances</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>Allowances</span>
                   <span className="text-green-600">+₹{allowances.toLocaleString()}</span>
                 </div>
               )}
               {overtimeHours > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Overtime ({overtimeHours}hrs)</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>Overtime ({overtimeHours}hrs)</span>
                   <span className="text-green-600">+₹{(overtimeHours * overtimeRate).toLocaleString()}</span>
                 </div>
               )}
               {bonus > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Bonus</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>Bonus</span>
                   <span className="text-green-600">+₹{bonus.toLocaleString()}</span>
                 </div>
               )}
-              <div className="flex justify-between border-t border-green-200 pt-2 mt-1">
-                <span className="text-gray-500">Gross salary</span>
-                <span className="font-semibold">₹{result.grossSalary.toLocaleString()}</span>
+              <div className="flex justify-between pt-2 mt-1" style={{ borderTop: '1px solid var(--border)' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>Gross salary</span>
+                <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>₹{result.grossSalary.toLocaleString()}</span>
               </div>
               {result.lopDeduction > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Absent deduction ({workingDays - daysPresent} days)</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>Absent deduction ({workingDays - daysPresent} days)</span>
                   <span className="text-red-500">-₹{result.lopDeduction.toLocaleString()}</span>
                 </div>
               )}
               {result.pfDeduction > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">PF ({pfRate}%)</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>PF ({pfRate}%)</span>
                   <span className="text-red-500">-₹{result.pfDeduction.toLocaleString()}</span>
                 </div>
               )}
               {result.esiDeduction > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">ESI ({esiRate}%)</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>ESI ({esiRate}%)</span>
                   <span className="text-red-500">-₹{result.esiDeduction.toLocaleString()}</span>
                 </div>
               )}
               {result.tdsDeduction > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">TDS ({tdsRate}%)</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>TDS ({tdsRate}%)</span>
                   <span className="text-red-500">-₹{result.tdsDeduction.toLocaleString()}</span>
                 </div>
               )}
               {result.ptDeduction > 0 && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Professional Tax</span>
+                  <span style={{ color: 'var(--text-secondary)' }}>Professional Tax</span>
                   <span className="text-red-500">-₹{result.ptDeduction.toLocaleString()}</span>
                 </div>
               )}
-              <div className="border-t border-green-200 pt-2 mt-1 flex justify-between">
-                <span className="font-bold text-gray-900">Net Salary</span>
+              <div className="pt-2 mt-1 flex justify-between" style={{ borderTop: '1px solid var(--border)' }}>
+                <span className="font-bold" style={{ color: 'var(--text-primary)' }}>Net Salary</span>
                 <span className="font-bold text-green-600 text-lg">
                   ₹{result.netSalary.toLocaleString()}
                 </span>
