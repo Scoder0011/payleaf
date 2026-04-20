@@ -3,19 +3,23 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import { ArrowLeftIcon } from '@/components/ui/icons'
+import { ArrowLeftIcon, FileTextIcon } from '@/components/ui/icons'
+import { PDFDownloadLink } from '@react-pdf/renderer'
+import PayslipPDF from '@/components/PayslipPDF'
 
 export default function HistoryPage() {
   const [records, setRecords] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const router = useRouter()
   const supabase = createClient()
+  const [business, setBusiness] = useState<any>(null)
 
   useEffect(() => { loadHistory() }, [])
 
   async function loadHistory() {
     const { data: business } = await supabase
-      .from('businesses').select('id').single()
+      .from('businesses').select('*').single()
+    setBusiness(business)
 
     const { data } = await supabase
       .from('payroll_records')
@@ -61,9 +65,11 @@ export default function HistoryPage() {
 
         <div className="flex flex-col gap-3">
           {records.map(record => (
-            <div key={record.id}
+            <div
+              key={record.id}
               className="rounded-xl p-5"
-              style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+              style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+            >
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <p className="font-medium" style={{ color: 'var(--text-primary)' }}>
@@ -75,7 +81,7 @@ export default function HistoryPage() {
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-green-600 text-lg">
-                    ₹{record.net_salary?.toLocaleString()}
+                    Rs. {record.net_salary?.toLocaleString()}
                   </p>
                   <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                     {months[record.month - 1]} {record.year}
@@ -88,7 +94,7 @@ export default function HistoryPage() {
               >
                 <div>
                   <p>Gross</p>
-                  <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>₹{record.gross_salary?.toLocaleString()}</p>
+                  <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>Rs. {record.gross_salary?.toLocaleString()}</p>
                 </div>
                 <div>
                   <p>Days present</p>
@@ -116,6 +122,31 @@ export default function HistoryPage() {
                     Paid
                   </p>
                 </div>
+              </div>
+              <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
+                <PDFDownloadLink
+                  document={
+                    <PayslipPDF
+                      employee={record.employees}
+                      business={business}
+                      record={record}
+                    />
+                  }
+                  fileName={`payslip-${record.employees?.name || 'employee'}-${months[record.month - 1]}-${record.year}.pdf`}
+                  className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm transition hover:opacity-90"
+                  style={{
+                    background: 'rgba(22,163,74,0.1)',
+                    border: '1px solid rgba(22,163,74,0.2)',
+                    color: '#15803d'
+                  }}
+                >
+                  {({ loading: pdfLoading }) => (
+                    <>
+                      <FileTextIcon className="h-4 w-4" />
+                      <span>{pdfLoading ? 'Preparing...' : 'Download Payslip'}</span>
+                    </>
+                  )}
+                </PDFDownloadLink>
               </div>
             </div>
           ))}

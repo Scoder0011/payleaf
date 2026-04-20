@@ -31,7 +31,7 @@ export default function Home() {
       icon: FileTextIcon,
       title: 'Payslip Generation',
       desc: 'Generate clean payslip PDFs instantly. Download and share with employees in one click.',
-      soon: true,
+      soon: false,
     },
     {
       icon: CheckCircleIcon,

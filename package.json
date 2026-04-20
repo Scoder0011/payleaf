@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Scoder0011/payleaf#readme",
   "dependencies": {
-    "@react-pdf/renderer": "^4.3.2",
+    "@react-pdf/renderer": "^4.3.3",
     "@supabase/ssr": "^0.10.0",
     "@supabase/supabase-js": "^2.101.1",
     "@tailwindcss/postcss": "^4.2.2",

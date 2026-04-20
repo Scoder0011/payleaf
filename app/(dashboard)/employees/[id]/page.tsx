@@ -12,6 +12,10 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [editName, setEditName] = useState('')
+  const [editRole, setEditRole] = useState('')
+  const [editSalary, setEditSalary] = useState('')
   const router = useRouter()
   const supabase = createClient()
 
@@ -40,6 +44,9 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
       .eq('id', id)
       .single()
     setEmployee(data)
+    setEditName(data?.name || '')
+    setEditRole(data?.role || '')
+    setEditSalary(String(data?.basic_salary ?? ''))
     setLoading(false)
   }
 
@@ -69,6 +76,19 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
     background: 'var(--bg-secondary)',
     border: '1px solid var(--border)',
     color: 'var(--text-primary)',
+  }
+
+  async function saveEmployee() {
+    await supabase
+      .from('employees')
+      .update({
+        name: editName,
+        role: editRole,
+        basic_salary: parseFloat(editSalary)
+      })
+      .eq('id', id)
+    setEditing(false)
+    loadEmployee()
   }
 
   async function savePayroll() {
@@ -118,12 +138,87 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
         </button>
 
         {/* Employee info */}
-        <div className="rounded-xl p-6 mb-4" style={cardStyle}>
-          <h1 className="text-xl font-bold" style={{ color: 'var(--text-primary)' }}>{employee?.name}</h1>
-          <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>{employee?.role}</p>
-          <p className="text-green-600 font-semibold mt-1">
-            ₹{parseFloat(employee?.basic_salary || 0).toLocaleString()} base monthly salary
-          </p>
+        <div
+          className="rounded-xl p-6 mb-4"
+          style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}
+        >
+          {editing ? (
+            <div className="flex flex-col gap-3">
+              <input
+                value={editName}
+                onChange={e => setEditName(e.target.value)}
+                placeholder="Full name"
+                className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+                style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-primary)'
+                }}
+              />
+              <input
+                value={editRole}
+                onChange={e => setEditRole(e.target.value)}
+                placeholder="Role / Designation"
+                className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+                style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-primary)'
+                }}
+              />
+              <input
+                type="number"
+                value={editSalary}
+                onChange={e => setEditSalary(e.target.value)}
+                placeholder="Base monthly salary"
+                className="w-full px-4 py-3 rounded-lg text-sm outline-none"
+                style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-primary)'
+                }}
+              />
+              <div className="flex gap-3">
+                <button
+                  onClick={saveEmployee}
+                  className="px-5 py-2 rounded-lg text-white text-sm font-medium"
+                  style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)' }}
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setEditing(false)}
+                  className="px-5 py-2 rounded-lg text-sm"
+                  style={{ background: 'var(--bg-secondary)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-start justify-between">
+              <div>
+                <h1 style={{ color: 'var(--text-primary)' }} className="text-xl font-bold">
+                  {employee?.name}
+                </h1>
+                <p style={{ color: 'var(--text-muted)' }} className="text-sm">{employee?.role}</p>
+                <p className="text-green-400 font-semibold mt-1">
+                  Rs. {parseFloat(employee?.basic_salary || 0).toLocaleString()} base monthly salary
+                </p>
+              </div>
+              <button
+                onClick={() => setEditing(true)}
+                className="text-sm px-4 py-2 rounded-lg transition"
+                style={{
+                  background: 'var(--bg-secondary)',
+                  border: '1px solid var(--border)',
+                  color: 'var(--text-secondary)'
+                }}
+              >
+                Edit
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Attendance */}
