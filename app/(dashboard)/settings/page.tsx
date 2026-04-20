@@ -18,6 +18,8 @@ export default function SettingsPage() {
   const { theme, toggleTheme } = useTheme()
   const supabase = createClient()
   const ThemeIcon = theme === 'dark' ? SunIcon : MoonIcon
+  const [currency, setCurrency] = useState('INR')
+  const [currencySaved, setCurrencySaved] = useState(false)
 
   useEffect(() => { load() }, [])
 
@@ -25,6 +27,7 @@ export default function SettingsPage() {
     const { data } = await supabase.from('businesses').select('*').single()
     setBusiness(data)
     setBusinessName(data?.name || '')
+    setCurrency(data?.currency || 'INR')
     setLoading(false)
   }
 
@@ -37,6 +40,18 @@ export default function SettingsPage() {
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+
+  async function saveCurrency() {
+    if (!business?.id) return
+
+    await supabase
+      .from('businesses')
+      .update({ currency })
+      .eq('id', business.id)
+
+    setCurrencySaved(true)
+    setTimeout(() => setCurrencySaved(false), 2000)
   }
 
   async function changePassword() {
@@ -93,6 +108,44 @@ export default function SettingsPage() {
             style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)' }}
           >
             {saved ? 'Saved ✓' : saving ? 'Saving...' : 'Save'}
+          </button>
+        </div>
+      </div>
+
+      {/* Currency */}
+      <div className="rounded-xl p-6 mb-4"
+        style={{ background: 'var(--bg-card)', border: '1px solid var(--border)' }}>
+        <h2 style={{ color: 'var(--text-primary)' }} className="font-semibold mb-1">Currency</h2>
+        <p style={{ color: 'var(--text-muted)' }} className="text-sm mb-4">
+          Set your default currency for salary display
+        </p>
+        <div className="flex gap-3">
+          <select
+            value={currency}
+            onChange={e => setCurrency(e.target.value)}
+            className="flex-1 px-4 py-3 rounded-lg text-sm outline-none"
+            style={{
+              background: 'var(--bg-secondary)',
+              border: '1px solid var(--border)',
+              color: 'var(--text-primary)',
+              colorScheme: 'dark'
+            }}
+          >
+            <option value="INR">INR — Indian Rupee (Rs.)</option>
+            <option value="USD">USD — US Dollar ($)</option>
+            <option value="EUR">EUR — Euro (€)</option>
+            <option value="GBP">GBP — British Pound (£)</option>
+            <option value="AED">AED — UAE Dirham (AED)</option>
+            <option value="SGD">SGD — Singapore Dollar (S$)</option>
+            <option value="AUD">AUD — Australian Dollar (A$)</option>
+            <option value="CAD">CAD — Canadian Dollar (C$)</option>
+          </select>
+          <button
+            onClick={saveCurrency}
+            className="px-5 py-3 rounded-lg text-white text-sm font-medium transition"
+            style={{ background: 'linear-gradient(135deg, #16a34a, #15803d)' }}
+          >
+            {currencySaved ? 'Saved ✓' : 'Save'}
           </button>
         </div>
       </div>

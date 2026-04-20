@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useBusiness } from '@/lib/useBusiness'
 import { useRouter } from 'next/navigation'
 import { ArrowLeftIcon, FileTextIcon } from '@/components/ui/icons'
 import { PDFDownloadLink } from '@react-pdf/renderer'
@@ -12,6 +13,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
   const supabase = createClient()
+  const { business: currentBusiness, format } = useBusiness()
   const [business, setBusiness] = useState<any>(null)
 
   useEffect(() => { loadHistory() }, [])
@@ -32,6 +34,7 @@ export default function HistoryPage() {
   }
 
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+  const activeBusiness = currentBusiness || business
 
   if (loading) return (
     <main className="min-h-screen flex items-center justify-center">
@@ -81,7 +84,7 @@ export default function HistoryPage() {
                 </div>
                 <div className="text-right">
                   <p className="font-bold text-green-600 text-lg">
-                    Rs. {record.net_salary?.toLocaleString()}
+                    {format(record.net_salary)}
                   </p>
                   <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                     {months[record.month - 1]} {record.year}
@@ -94,7 +97,7 @@ export default function HistoryPage() {
               >
                 <div>
                   <p>Gross</p>
-                  <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>Rs. {record.gross_salary?.toLocaleString()}</p>
+                  <p className="font-medium" style={{ color: 'var(--text-secondary)' }}>{format(record.gross_salary)}</p>
                 </div>
                 <div>
                   <p>Days present</p>
@@ -125,10 +128,11 @@ export default function HistoryPage() {
               </div>
               <div className="mt-3 pt-3" style={{ borderTop: '1px solid var(--border)' }}>
                 <PDFDownloadLink
+                  key={`${record.id}-${activeBusiness?.id || 'business'}-${activeBusiness?.currency || 'INR'}`}
                   document={
                     <PayslipPDF
                       employee={record.employees}
-                      business={business}
+                      business={activeBusiness}
                       record={record}
                     />
                   }

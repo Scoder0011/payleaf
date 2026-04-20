@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
 } from '@react-pdf/renderer'
+import { formatCurrency } from '@/lib/currency'
 
 const styles = StyleSheet.create({
   page: {
@@ -140,6 +141,8 @@ interface Props {
 }
 
 export default function PayslipPDF({ employee, business, record }: Props) {
+  const format = (amount: number) => formatCurrency(amount, business?.currency || 'INR')
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -190,14 +193,14 @@ export default function PayslipPDF({ employee, business, record }: Props) {
           <View style={styles.row}>
             <Text style={styles.rowLabel}>Base Salary</Text>
             <Text style={styles.rowValueGreen}>
-              Rs. {Number(record.basic_salary).toLocaleString()}
+              {format(Number(record.basic_salary))}
             </Text>
           </View>
           {record.hra > 0 && (
             <View style={styles.row}>
               <Text style={styles.rowLabel}>HRA</Text>
               <Text style={styles.rowValueGreen}>
-                +Rs. {Number(record.hra).toLocaleString()}
+                +{format(Number(record.hra))}
               </Text>
             </View>
           )}
@@ -205,7 +208,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
             <View style={styles.row}>
               <Text style={styles.rowLabel}>Allowances</Text>
               <Text style={styles.rowValueGreen}>
-                +Rs. {Number(record.allowances).toLocaleString()}
+                +{format(Number(record.allowances))}
               </Text>
             </View>
           )}
@@ -215,7 +218,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
                 Overtime ({record.overtime_hours} hrs)
               </Text>
               <Text style={styles.rowValueGreen}>
-                +Rs. {(record.overtime_hours * record.overtime_rate).toLocaleString()}
+                +{format(record.overtime_hours * record.overtime_rate)}
               </Text>
             </View>
           )}
@@ -223,7 +226,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
             <View style={styles.row}>
               <Text style={styles.rowLabel}>Bonus</Text>
               <Text style={styles.rowValueGreen}>
-                +Rs. {Number(record.bonus).toLocaleString()}
+                +{format(Number(record.bonus))}
               </Text>
             </View>
           )}
@@ -232,7 +235,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
               Gross Salary
             </Text>
             <Text style={[styles.rowValue, { fontWeight: 'bold' }]}>
-              Rs. {Number(record.gross_salary).toLocaleString()}
+              {format(Number(record.gross_salary))}
             </Text>
           </View>
         </View>
@@ -244,7 +247,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
             <View style={styles.row}>
               <Text style={styles.rowLabel}>Provident Fund (PF)</Text>
               <Text style={styles.rowValueRed}>
-                -Rs. {Number(record.pf_deduction).toLocaleString()}
+                -{format(Number(record.pf_deduction))}
               </Text>
             </View>
           )}
@@ -252,7 +255,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
             <View style={styles.row}>
               <Text style={styles.rowLabel}>ESI</Text>
               <Text style={styles.rowValueRed}>
-                -Rs. {Number(record.esi_deduction).toLocaleString()}
+                -{format(Number(record.esi_deduction))}
               </Text>
             </View>
           )}
@@ -260,7 +263,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
             <View style={styles.row}>
               <Text style={styles.rowLabel}>TDS</Text>
               <Text style={styles.rowValueRed}>
-                -Rs. {Number(record.tds_deduction).toLocaleString()}
+                -{format(Number(record.tds_deduction))}
               </Text>
             </View>
           )}
@@ -268,7 +271,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
             <View style={styles.row}>
               <Text style={styles.rowLabel}>Professional Tax</Text>
               <Text style={styles.rowValueRed}>
-                -Rs. {Number(record.pt_deduction).toLocaleString()}
+                -{format(Number(record.pt_deduction))}
               </Text>
             </View>
           )}
@@ -278,10 +281,10 @@ export default function PayslipPDF({ employee, business, record }: Props) {
                 Absent Deduction ({record.working_days - record.days_present} days)
               </Text>
               <Text style={styles.rowValueRed}>
-                -Rs. {(
+                -{format(Number((
                   Number(record.basic_salary) / record.working_days *
                   (record.working_days - record.days_present)
-                ).toFixed(0)}
+                ).toFixed(0)))}
               </Text>
             </View>
           )}
@@ -301,7 +304,7 @@ export default function PayslipPDF({ employee, business, record }: Props) {
         <View style={styles.totalRow}>
           <Text style={styles.totalLabel}>Net Salary</Text>
           <Text style={styles.totalValue}>
-            Rs. {Number(record.net_salary).toLocaleString()}
+            {format(Number(record.net_salary))}
           </Text>
         </View>
 

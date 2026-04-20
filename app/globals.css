@@ -39,3 +39,22 @@ body {
   background: var(--bg-primary);
   color: var(--text-primary);
 }
+
+select option {
+  background: #1a2535;
+  color: #ffffff;
+}
+
+p, h1, h2, h3, span, label {
+  cursor: default;
+  user-select: none;
+}
+
+input, textarea, select {
+  cursor: text;
+  user-select: text;
+}
+
+button, a {
+  cursor: pointer;
+}

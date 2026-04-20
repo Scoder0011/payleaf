@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useBusiness } from '@/lib/useBusiness'
 import { useRouter } from 'next/navigation'
 import { UsersIcon } from '@/components/ui/icons'
 
@@ -12,6 +13,7 @@ export default function EmployeesPage() {
   const [name, setName] = useState('')
   const [role, setRole] = useState('')
   const [salary, setSalary] = useState('')
+  const { format } = useBusiness()
   const router = useRouter()
   const supabase = createClient()
   const cardStyle = { background: 'var(--bg-card)', border: '1px solid var(--border)' }
@@ -158,7 +160,7 @@ export default function EmployeesPage() {
                   onClick={() => router.push(`/employees/${emp.id}`)}
                 >
                   <p className="text-green-400 font-semibold">
-                    ₹{parseFloat(emp.basic_salary).toLocaleString()}
+                    {format(parseFloat(emp.basic_salary))}
                   </p>
                   <p className="text-xs" style={{ color: 'var(--text-muted)' }}>base salary</p>
                 </div>

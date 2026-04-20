@@ -4,6 +4,7 @@ import { useEffect, useState, use } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { calculateSalary } from '@/lib/calculations'
+import { useBusiness } from '@/lib/useBusiness'
 import { ArrowLeftIcon } from '@/components/ui/icons'
 
 export default function EmployeePage({ params }: { params: Promise<{ id: string }> }) {
@@ -16,6 +17,7 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
   const [editName, setEditName] = useState('')
   const [editRole, setEditRole] = useState('')
   const [editSalary, setEditSalary] = useState('')
+  const { format } = useBusiness()
   const router = useRouter()
   const supabase = createClient()
 
@@ -203,7 +205,7 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
                 </h1>
                 <p style={{ color: 'var(--text-muted)' }} className="text-sm">{employee?.role}</p>
                 <p className="text-green-400 font-semibold mt-1">
-                  Rs. {parseFloat(employee?.basic_salary || 0).toLocaleString()} base monthly salary
+                  {format(parseFloat(employee?.basic_salary || 0))} base monthly salary
                 </p>
               </div>
               <button
@@ -439,70 +441,70 @@ export default function EmployeePage({ params }: { params: Promise<{ id: string 
             <div className="flex flex-col gap-2 text-sm">
               <div className="flex justify-between">
                 <span style={{ color: 'var(--text-secondary)' }}>Base salary</span>
-                <span className="font-medium" style={{ color: 'var(--text-primary)' }}>₹{Number(employee?.basic_salary).toLocaleString()}</span>
+                <span className="font-medium" style={{ color: 'var(--text-primary)' }}>{format(Number(employee?.basic_salary || 0))}</span>
               </div>
               {hra > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>HRA</span>
-                  <span className="text-green-600">+₹{hra.toLocaleString()}</span>
+                  <span className="text-green-600">+{format(hra)}</span>
                 </div>
               )}
               {allowances > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>Allowances</span>
-                  <span className="text-green-600">+₹{allowances.toLocaleString()}</span>
+                  <span className="text-green-600">+{format(allowances)}</span>
                 </div>
               )}
               {overtimeHours > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>Overtime ({overtimeHours}hrs)</span>
-                  <span className="text-green-600">+₹{(overtimeHours * overtimeRate).toLocaleString()}</span>
+                  <span className="text-green-600">+{format(overtimeHours * overtimeRate)}</span>
                 </div>
               )}
               {bonus > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>Bonus</span>
-                  <span className="text-green-600">+₹{bonus.toLocaleString()}</span>
+                  <span className="text-green-600">+{format(bonus)}</span>
                 </div>
               )}
               <div className="flex justify-between pt-2 mt-1" style={{ borderTop: '1px solid var(--border)' }}>
                 <span style={{ color: 'var(--text-secondary)' }}>Gross salary</span>
-                <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>₹{result.grossSalary.toLocaleString()}</span>
+                <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>{format(result.grossSalary)}</span>
               </div>
               {result.lopDeduction > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>Absent deduction ({workingDays - daysPresent} days)</span>
-                  <span className="text-red-500">-₹{result.lopDeduction.toLocaleString()}</span>
+                  <span className="text-red-500">-{format(result.lopDeduction)}</span>
                 </div>
               )}
               {result.pfDeduction > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>PF ({pfRate}%)</span>
-                  <span className="text-red-500">-₹{result.pfDeduction.toLocaleString()}</span>
+                  <span className="text-red-500">-{format(result.pfDeduction)}</span>
                 </div>
               )}
               {result.esiDeduction > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>ESI ({esiRate}%)</span>
-                  <span className="text-red-500">-₹{result.esiDeduction.toLocaleString()}</span>
+                  <span className="text-red-500">-{format(result.esiDeduction)}</span>
                 </div>
               )}
               {result.tdsDeduction > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>TDS ({tdsRate}%)</span>
-                  <span className="text-red-500">-₹{result.tdsDeduction.toLocaleString()}</span>
+                  <span className="text-red-500">-{format(result.tdsDeduction)}</span>
                 </div>
               )}
               {result.ptDeduction > 0 && (
                 <div className="flex justify-between">
                   <span style={{ color: 'var(--text-secondary)' }}>Professional Tax</span>
-                  <span className="text-red-500">-₹{result.ptDeduction.toLocaleString()}</span>
+                  <span className="text-red-500">-{format(result.ptDeduction)}</span>
                 </div>
               )}
               <div className="pt-2 mt-1 flex justify-between" style={{ borderTop: '1px solid var(--border)' }}>
                 <span className="font-bold" style={{ color: 'var(--text-primary)' }}>Net Salary</span>
                 <span className="font-bold text-green-600 text-lg">
-                  ₹{result.netSalary.toLocaleString()}
+                  {format(result.netSalary)}
                 </span>
               </div>
             </div>
